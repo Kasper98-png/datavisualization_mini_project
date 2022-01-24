@@ -1,8 +1,5 @@
-# plot_ggplot_UI
-# This is the UI function of our module.
+# This is the UI function of the scatter plot module.
 # It works similar to ui.R, except when creating outputs
-# you have to remember to encapsulate them with ns()
-# ns() concatenates the module ID to your outputs.
 
 plotly_point_UI <- function(id) {
   ns = NS(id)
@@ -15,23 +12,22 @@ plotly_point_UI <- function(id) {
   )
 }
 
-# plot_ggplot
-# This is our server function of the module.
-# Beyond storing the namespace, all computations must happen inside the
-# plotlyOutput reactive context.
+# This is the server function of the module.
 plot_plotly <- function(input, output, session, df) {
   ns <- session$ns
   
   output$point_plot <- renderPlotly({
     #validate() ensures that our code is only executed if the dataframe
-    # is available. The dataframe may not be present if the user hasnt uploaded
+    # is available. The dataframe may not be present if the user has not uploaded
     # any csv file yet. The "vis" errorClass is used to show where the plot will
-    # be plotted (optional).
+    # be plotted.
     validate(need(df(), "Waiting for data."), errorClass = "vis")
-    # To read the reactive dataframe 'df', we need to "evaluate" it.
-    # We do this by calling it as a function df(). 
+    
+    # "Evaluate" the dataframe 'df in order to read it.
     df_vis <- df()
+    
     # Now we can create a plot of the data.
+    # Use slider values to filter data.
     df_vis = df_vis %>%
       filter(input$slider1x[1] < incidents_85_99 & incidents_85_99 < input$slider1x[2])
     model1 = lm(data = df_vis, incidents_00_14 ~ incidents_85_99)

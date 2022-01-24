@@ -1,3 +1,5 @@
+#The layout of the homepage and calls to sub-module UI's
+
 shinyUI(
   fluidPage(title = "Flight safety",
     data_import_UI("import_game_csv"),

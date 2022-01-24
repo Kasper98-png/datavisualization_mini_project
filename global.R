@@ -1,19 +1,9 @@
-# Global.R - Bastian I. Hougaard
-# Whenever you create a new module, remember to add it to Global.R.
-# Global.R is ONLY for configuring global variables. Importing datasets in here
-# is NOT recommended. You should import data from inside a module instead, 
-# so your dataset is reactive.
-
-# 1) IMPORT LIBRARIES
-# When you import libraries below, they become available through-out your
-# whole R Shiny application. Importing your libraries here also means
-# you have a single location to watch what packages your application uses.
 library(tidyverse)
 library(plotly)
 library(shiny)
 library(shinyjs)
 
-# 2) SET R OPTIONS
+# 1) SET R OPTIONS
 # Sometimes R defaults are not ideal for the app we use.
 # shiny.fullstacktrace: prints full error messages from R Shiny for debugging.
 # digits.secs: Show milliseconds in timestamps.
@@ -22,13 +12,12 @@ options(shiny.fullstacktrace=TRUE)
 options("digits.secs"=6)
 options(shiny.maxRequestSize=50*1024^2)
 
-# 3) IMPORT MODULES
-# Whenever you create a new module, add it to the list below.
-# Importing your module makes them callable in your R Shiny application.
+# 2) IMPORT MODULES
+# Importing a module makes it callable in the R Shiny application.
 source("modules/data_import_module.R", local = T)
 source("modules/plotly_point_module.R", local = T)
-source("modules/plotly_histogram_module.R", local = T)
+#source("modules/plotly_histogram_module.R", local = T)
 source("modules/plot_linked_module.R", local = T)
 source("modules/page_linked_plots_module.R", local = T)
-source("modules/distributions_module.R", local = T)
+#source("modules/distributions_module.R", local = T)
 source("modules/violin_plot_module.R", local = T)

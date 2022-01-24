@@ -1,8 +1,5 @@
-# plot_linked_UI
-# This is the UI function of our module.
+# This is the UI function of the linked plot module.
 # It works similar to ui.R, except when creating outputs
-# you have to remember to encapsulate them with ns()
-# ns() concatenates the module ID to your outputs.
 
 plot_linked_UI <- function(id) {
   ns = NS(id)
@@ -28,28 +25,27 @@ plot_linked_UI <- function(id) {
   )
 }
 
-# This is our server function of the module.
-# Beyond storing the namespace, all computations must happen inside the
-# plotlyOutput reactive context.
+# This is the server function of the module.
 plot_linked <- function(input, output, session, df) {
   ns <- session$ns
   
   output$seatkm <- renderPlotly({
     #validate() ensures that our code is only executed if the dataframe
-    # is available. The dataframe may not be present if the user hasnt uploaded
+    # is available. The dataframe may not be present if the user has not uploaded
     # any csv file yet. The "vis" errorClass is used to show where the plot will
-    # be plotted (optional).
+    # be plotted.
     validate(need(df(), "Waiting for data."), errorClass = "vis")
 
-    # To read the reactive dataframe 'df', we need to "evaluate" it.
-    # We do this by calling it as a function df(). 
+    # "Evaluate" the dataframe 'df in order to read it.
     df_vis <- df()
     df_vis$rowID <- 1:nrow(df_vis)
     
-    choice = input$search
+    choice = input$search   #The selected values from the drop down menu
+    
     # To link scatter plot to bar plot we need to use "event_register()" and
     # specify what interaction we want to link. "plotly_selecting" sends
-    # events everytime you make a selection and drag over an item.
+    # events every time you make a selection and drag over an item.
+    # We also must check for choices in the selectInput from the UI.
     if ("Show all" %in% choice | is.null(choice)){plot = df_vis %>%
       plot_ly(x = ~avail_seat_km_per_week) %>%
       add_markers(y = ~incidents_85_99, text = ~airline, type = "scatter", name = "Incidents in 1985-1999") %>%
@@ -78,21 +74,21 @@ plot_linked <- function(input, output, session, df) {
     
   output$diff_inc <- renderPlotly({
     #validate() ensures that our code is only executed if the dataframe
-    # is available. The dataframe may not be present if the user hasnt uploaded
+    # is available. The dataframe may not be present if the user has not uploaded
     # any csv file yet. The "vis" errorClass is used to show where the plot will
-    # be plotted (optional).
+    # be plotted.
     validate(need(df(), "Waiting for data."), errorClass = "vis")
     
-    # To read the reactive dataframe 'df', we need to "evaluate" it.
-    # We do this by calling it as a function df(). 
+    # "Evaluate" the dataframe 'df in order to read it.
     df_vis <- df()
     df_vis$rowID <- 1:nrow(df_vis)
     df_vis$incidents_difference = df_vis$incidents_00_14-df_vis$incidents_85_99
     
-    choice = input$search
+    choice = input$search   # Selected values from the drop down menu
     
-    select.data <- event_data(event = "plotly_selecting")
+    select.data <- event_data(event = "plotly_selecting")   # Selected data points from plot
     
+    # Check if data points have been selected and check if choices from drop down menu
     if (!is.null(select.data)) {
       if (class(select.data) != class(list())){
         select.data = select.data %>% filter(select.data$curveNumber == 0||select.data$curveNumber == 1)

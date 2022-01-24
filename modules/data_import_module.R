@@ -1,13 +1,10 @@
-#data_import_UI
-# Our csv_uploadUI consists of a fileInput, an actionButton and some
-# text output. We could also remove the UI and only have a server function
-# which loaded a csv file with hardcoded path.
+# The UI consists of a fileInput, an actionButton and some
+# text output.
 data_import_UI <- function(id) {
-  # ns is short for "namespace". The function call below will initialize the namespace used
-  # for this module. Always have this line of code as the first thing in your UI.
+  #ns is short for "namespace". The function call below will initialize the namespace used
+  #for this module.
   ns = NS(id)
   
-  # UI code
   list(fluidRow(
     # When we create UI inside a module, we need to encapsulate
     # the ID with ns() (fx. ns("file") will result in "{modulename}-file"). 
@@ -23,7 +20,6 @@ data_import_UI <- function(id) {
 # This is the server function of our data import module.
 data_import <- function(input, output, session) {
   # We also need a line of code that define ns inside our server function.
-  # All modules should have this line below as the first line.
   # However, there is no ns() calls in here, because we can talk to
   # the UI directly through input${ui} and output${ui}.
   ns <- session$ns
@@ -49,14 +45,12 @@ data_import <- function(input, output, session) {
   }
   )
   
-  
   # 3) Observe when we have data
   # We can now observe changes made to our reactive dataframe 'df'
   # and show a text indicating that the data was received.
   observeEvent(toReturn$df, {
     req(!is.null(toReturn$df))
     output$statusText <- renderText({ "Success!" })
-    #if(!is.null(toReturn$df)){browser()}
   })
   return(toReturn)
 }
