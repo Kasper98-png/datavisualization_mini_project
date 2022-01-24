@@ -16,8 +16,6 @@ options(shiny.maxRequestSize=50*1024^2)
 # Importing a module makes it callable in the R Shiny application.
 source("modules/data_import_module.R", local = T)
 source("modules/plotly_point_module.R", local = T)
-#source("modules/plotly_histogram_module.R", local = T)
 source("modules/plot_linked_module.R", local = T)
 source("modules/page_linked_plots_module.R", local = T)
-#source("modules/distributions_module.R", local = T)
 source("modules/violin_plot_module.R", local = T)
